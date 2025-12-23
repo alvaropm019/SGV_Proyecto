@@ -255,3 +255,4 @@ public class RadarPanel extends GenericRadarPanel implements TrafficListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
+//holagit
