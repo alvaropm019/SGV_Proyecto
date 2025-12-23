@@ -66,4 +66,4 @@ public class ConflictManager {
         return EARTH_RADIUS_NM * c;
     }
 }
-//holagit
+//holagi
