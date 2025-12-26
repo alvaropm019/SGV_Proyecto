@@ -53,10 +53,12 @@ public class RadarPanel extends GenericRadarPanel implements TrafficListener {
     
     private Timeout tout;
     
+    private RadarFrame frame;
     
-    public RadarPanel(String mapfile, AntennaReceiver ar) {
+    public RadarPanel(String mapfile, AntennaReceiver ar, RadarFrame frame) {
         initComponents();
         this.ar=ar;
+        this.frame = frame;
         
         mapArea = new Rectangle2D.Double(lonWest, latNorth, lonEast-lonWest, latNorth-latSouth);
         
@@ -171,7 +173,7 @@ public class RadarPanel extends GenericRadarPanel implements TrafficListener {
         System.out.println("updated: "+t.getCallsign());
         
         java.util.List<TrafficGraphic> allTraffic = getAllTrafficGraphics();
-        GUI.ConflictManager.updateConflicts(allTraffic);
+        GUI.ConflictManager.updateConflicts(allTraffic, frame.getDistanciaConfigurada(), frame.isCalculoActivo());
         
         tout.activity();
         repaint();
@@ -184,7 +186,7 @@ public class RadarPanel extends GenericRadarPanel implements TrafficListener {
         repaint();
     }
     
-    private java.util.List<TrafficGraphic> getAllTrafficGraphics() {
+    public java.util.List<TrafficGraphic> getAllTrafficGraphics() {
         java.util.List<TrafficGraphic> list = new java.util.ArrayList<>();
         for (java.awt.Component c : this.getComponents()) {
             if (c instanceof TrafficPlot) {

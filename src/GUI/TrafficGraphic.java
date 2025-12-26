@@ -24,6 +24,7 @@ public class TrafficGraphic implements TrafficExtended {
     private boolean selected;
     
     private boolean inConflict = false;
+    public static boolean CALCULO_CONFLICT = false;
     
     private TrafficPlot tfp;
     

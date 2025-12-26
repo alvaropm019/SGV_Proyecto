@@ -15,11 +15,15 @@ public class ConflictManager {
     // Radio de la Tierra en Millas Náuticas
     private static final double EARTH_RADIUS_NM = 3440.065;
 
-    public static void updateConflicts(List<TrafficGraphic> trafficList) {
-        // Resetear estado
-        for (TrafficGraphic t : trafficList) {
-            t.setInConflict(false);
+    public static void updateConflicts(List<TrafficGraphic> trafficList, double maxDistNM, boolean activo) {  
+        
+
+        // Si el usuario pulsó cancelar, reseteamos todos los conflictos a false y salimos
+        if (!activo) {
+            for (TrafficGraphic t : trafficList) t.setInConflict(false);
+            return;
         }
+        
 
         // Comparar todos con todos
         for (int i = 0; i < trafficList.size(); i++) {
@@ -27,7 +31,7 @@ public class ConflictManager {
                 TrafficGraphic t1 = trafficList.get(i);
                 TrafficGraphic t2 = trafficList.get(j);
 
-                if (isConflict(t1, t2)) {
+                if (isConflict(t1, t2, maxDistNM)) {
                     t1.setInConflict(true);
                     t2.setInConflict(true);
                 }
@@ -35,7 +39,7 @@ public class ConflictManager {
         }
     }
 
-    private static boolean isConflict(TrafficGraphic t1, TrafficGraphic t2) {
+    private static boolean isConflict(TrafficGraphic t1, TrafficGraphic t2, double maxDistNM) {
         // Accedemos a la altitud a través de la clase Traffic
         // Usamos getAlt_ext() que es el método real para la altitud
         double alt1 = t1.getTraffic().getAltitude();
@@ -53,7 +57,7 @@ public class ConflictManager {
         double dist = calcularDistancia(lat1, lon1, lat2, lon2);
 
         // Alerta si: Distancia < 5NM Y Altitud < 1000ft
-        return (dist < 50.0);// && altDiff < 1000);
+        return (dist < maxDistNM);// && altDiff < 1000);
     }
 
     private static double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
